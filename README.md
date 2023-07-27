@@ -1,46 +1,51 @@
-# Getting Started with Create React App
+# 반응 게임
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+> 반응 속도를 체크할 수 있는 웹 게임.
 
-## Available Scripts
 
-In the project directory, you can run:
 
-### `yarn start`
+#### 방법
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- 초록색이 나오면 재빨리 클릭해야합니다.
+  - 결과 단위는 `m/s`
+- 보라색이 나왔을 때 클릭하면 `Fail`입니다.
+- `Regame`을 통해 다시 할 수 있습니다.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
 
-### `yarn test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+#### 구현
 
-### `yarn build`
+- 색이 바뀌는 것은 ramdom으로 뽑았습니다.
+  - 범위 `1초 ~ 2초`
+  ```javascript
+  // 10 <= x <= 20
+  const randomTime = Math.floor(Math.random() * 20) + 10;
+  ```
+- 사용자가 클릭할 때까지 색이 바뀌는 함수가 재귀적으로 일어납니다.
+  ```javascript
+  // 배경 바꾸기
+  const changeBg = async (randomTime: number) => {
+    await sleep(randomTime);
+    if (game.current) {
+      const randomTime = Math.floor(Math.random() * 20) + 15;
+      if (randomTime % 2) {
+        startedTime = new Date().getTime();
+        setBgColor("#78C79D");
+        changeBg(randomTime);
+      } else {
+        setBgColor("#B5B0F2");
+        changeBg(randomTime);
+      }
+    }
+  };
+  ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+#### 시연
 
-### `yarn eject`
+![success](README.assets/success.gif)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+![failed](README.assets/failed.gif)
